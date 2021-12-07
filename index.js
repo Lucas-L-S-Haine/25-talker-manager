@@ -6,6 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
+const HTTP_NOT_OK_STATUS = 404;
 const PORT = '3000';
 
 // não remova esse endpoint, e para o avaliador funcionar
@@ -14,11 +15,25 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', async (req, res) => {
-  const talker = await fs.readFile('./talker.json', 'utf-8');
-  if (!talker) return res.status(HTTP_OK_STATUS).send([]);
-  return res.status(HTTP_OK_STATUS).send(JSON.parse(talker));
+  const talkerList = await fs.readFile('./talker.json', 'utf-8');
+  if (!talkerList) return res.status(HTTP_OK_STATUS).send([]);
+  return res.status(HTTP_OK_STATUS).send(JSON.parse(talkerList));
 });
 
-app.listen(PORT, () => {
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkerList = await fs.readFile('./talker.json', 'utf-8');
+  const chosenTalker = JSON
+    .parse(talkerList)
+    .find((talker) => (talker.id === Number(id)));
+  if (!chosenTalker) {
+    return res.status(HTTP_NOT_OK_STATUS).send({
+      message: 'Pessoa palestrante não encontrada',
+    });
+  }
+  return res.status(HTTP_OK_STATUS).send(chosenTalker);
+});
+
+app.listen(PORT, async () => {
   console.log('Online');
 });
