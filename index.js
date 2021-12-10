@@ -2,6 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs/promises');
 const crypto = require('crypto');
+const {
+  validToken,
+  validName,
+  validAge,
+  hasTalk,
+  hasRate,
+  hasDate,
+  validRate,
+  validDate,
+} = require('./services');
 
   // const regEmail = /\w@\w.\w/;
 const regEmail = /\S+@\S+\.\S+/;
@@ -18,6 +28,7 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', async (req, res) => {
+  console.log(req);
   const talkerList = await fs.readFile('./talker.json', 'utf-8');
   if (!talkerList) return res.status(200).send([]);
   return res.status(200).send(JSON.parse(talkerList));
@@ -51,6 +62,16 @@ app.post('/login', (req, res) => {
     return res.status(400).send({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
   return res.status(200).send({ token });
+});
+
+app.post('/talker', validToken, validName, validAge, hasTalk,
+  hasRate, hasDate, validRate, validDate, async (req, res) => {
+  const chosenTalker = req.body;
+  const talkerList = await fs.readFile('./talker.json', 'utf-8');
+  req.body.id = JSON.parse(talkerList).length + 1;
+  const newList = JSON.stringify(JSON.parse(talkerList).concat(chosenTalker));
+  fs.writeFile('./talker.json', newList);
+  return res.status(201).send(req.body);
 });
 
 app.listen(PORT, async () => {
