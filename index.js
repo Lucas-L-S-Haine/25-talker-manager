@@ -11,7 +11,7 @@ const {
   hasDate,
   validRate,
   validDate,
-} = require('./services');
+} = require('./middlewares');
 
   // const regEmail = /\w@\w.\w/;
 const regEmail = /\S+@\S+\.\S+/;
