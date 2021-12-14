@@ -45,4 +45,37 @@ talkerRouter.post('/', validToken, validName, validAge, hasTalk,
   return res.status(201).send(req.body);
 });
 
+// 5 - Crie o endpoint PUT /talker/:id
+
+talkerRouter.put('/:id', validToken, validName, validAge, hasTalk,
+  hasRate, validRate, hasDate, validDate, async (req, res) => {
+  const id = Number(req.params.id);
+  req.body.id = id;
+  const chosenTalker = req.body;
+  let talkerList = await fs.readFile(talkerJson, 'utf-8');
+  talkerList = JSON.parse(talkerList);
+  const index = talkerList.indexOf(talkerList.find((talker) => talker.id === id));
+  const newList = talkerList.slice(0, index)
+    .concat(chosenTalker)
+    .concat(talkerList.slice(index + 1));
+  fs.writeFile(talkerJson, JSON.stringify(newList));
+  return res.status(200).send(req.body);
+});
+
+// 6 - Crie o endpoint DELETE /talker/:id
+
+talkerRouter.delete('/:id', validToken, async (req, res) => {
+  const id = Number(req.params.id);
+  req.body.id = id;
+  let talkerList = await fs.readFile(talkerJson, 'utf-8');
+  talkerList = JSON.parse(talkerList);
+  const index = talkerList.indexOf(talkerList.find((talker) => talker.id === id));
+  const newList = talkerList.slice(0, index)
+    .concat(talkerList.slice(index + 1));
+  fs.writeFile(talkerJson, JSON.stringify(newList));
+  return res.status(200).send({
+    message: 'Pessoa palestrante deletada com sucesso',
+  });
+});
+
 module.exports = talkerRouter;
