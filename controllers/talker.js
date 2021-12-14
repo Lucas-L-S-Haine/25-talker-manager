@@ -21,6 +21,15 @@ talkerRouter.get('/', async (req, res) => {
   return res.status(200).send(JSON.parse(talkerList));
 });
 
+talkerRouter.get('/search', validToken, async (req, res) => {
+  const { q } = req.query;
+  let talkerList = await fs.readFile(talkerJson, 'utf-8');
+  talkerList = JSON.parse(talkerList);
+  const result = talkerList
+    .filter((talker) => talker.name.toLowerCase().includes(q.toLowerCase()));
+  return res.status(200).send(result);
+});
+
 talkerRouter.get('/:id', async (req, res) => {
   const id = Number(req.params.id);
   const talkerList = await fs.readFile(talkerJson, 'utf-8');
@@ -61,8 +70,6 @@ talkerRouter.put('/:id', validToken, validName, validAge, hasTalk,
   fs.writeFile(talkerJson, JSON.stringify(newList));
   return res.status(200).send(req.body);
 });
-
-// 6 - Crie o endpoint DELETE /talker/:id
 
 talkerRouter.delete('/:id', validToken, async (req, res) => {
   const id = Number(req.params.id);
