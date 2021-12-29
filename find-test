@@ -1,0 +1,3 @@
+#!/bin/sh
+
+grep "describe('$1" tests/* | cut -d ":" -f 1
