@@ -2,6 +2,8 @@ const frisby = require('frisby');
 const fs = require('fs');
 const path = require('path');
 
+const PORT = process.env.PORT || 8000;
+
 const postTalkerMock = {
   name: 'Zendaya Maree',
   age: 24,
@@ -9,7 +11,7 @@ const postTalkerMock = {
   talk: { rate: 5, watchedAt: '25/09/2020' },
 };
 
-const url = 'http://localhost:3000';
+const url = `http://localhost:${PORT}`;
 
 describe('4 - Crie o endpoint POST /talker', () => {
   beforeEach(() => {

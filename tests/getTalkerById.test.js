@@ -2,7 +2,9 @@ const frisby = require('frisby');
 const fs = require('fs');
 const path = require('path');
 
-const url = 'http://localhost:3000';
+const PORT = process.env.PORT || 8000;
+
+const url = `http://localhost:${PORT}`;
 
 describe('2 - Crie o endpoint GET /talker/:id', () => {
   beforeEach(() => {

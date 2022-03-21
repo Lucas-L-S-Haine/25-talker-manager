@@ -6,7 +6,7 @@ const loginController = require('./controllers/login');
 const app = express();
 app.use(bodyParser.json());
 
-const PORT = '3000';
+const PORT = '8000';
 
 app.use('/talker', talkerController);
 app.use('/login', loginController);
@@ -17,5 +17,5 @@ app.get('/', (_request, response) => {
 });
 
 app.listen(PORT, async () => {
-  console.log('Online');
+  console.log(`Application online on port \x1b[03;94m${PORT}\x1b[00m!`);
 });

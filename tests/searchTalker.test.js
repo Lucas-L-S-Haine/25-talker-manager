@@ -3,7 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const talkersSeed = require('./seed.json');
 
-const url = 'http://localhost:3000';
+const PORT = process.env.PORT || 8000;
+
+const url = `http://localhost:${PORT}`;
 
 describe('7 - Crie o endpoint GET /talker/search?q=searchTerm', () => {
   beforeEach(() => {
