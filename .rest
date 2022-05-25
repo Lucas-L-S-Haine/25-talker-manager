@@ -1,6 +1,0 @@
-http://localhost:3000
-
-Content-Type: application/json; charset=utf-8
-authorization: a5d641682f393d09
-
-GET /talker/search?q=Da
