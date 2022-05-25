@@ -1,5 +1,0 @@
-#!/bin/sh
-
-node_modules/jest/bin/jest.js --runInBand "$@" &&
-cp tests/seed.json talker.json
-git restore talker.json
